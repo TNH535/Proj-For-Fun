@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poiret+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <title>Brute Force Login Simulation</title>
+  <style>
+    body{font-family:"Abril Fatface",serif;color:#2f0159;display:flex;justify-content:center;align-items:center;height:100vh;background-color:#a469db;margin:0;}
+    .login-container{background:#fff;padding:25px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);width:300px;}
+    .form-group{margin-bottom:15px;position:relative;text-align:left;}
+    label{display:block;margin-bottom:5px;font-family:"Poiret One",serif;font-weight:800;}
+    input{width:100%;padding:8px;box-sizing:border-box;border:1px solid #ccc;border-radius:4px;}
+    .toggle-password{position:absolute;right:10px;top:28px;cursor:pointer;font-size:24px;}
+    button{width:100%;padding:10px;background:#e5d3f6;border:none;color:#3b0270;font-family:"Poiret One",serif;font-weight:800;font-size:16px;border-radius:4px;cursor:pointer;}
+    button:hover{background:#a469db;}
+    .progress-container{width:100%;background:#ddd;border-radius:5px;margin-top:10px;}
+    .progress-bar{width:0%;height:10px;background:#3b0270;border-radius:5px;}
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Brute Force Login Simulation</h2>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" required>
+        <i id="togglePassword" class="material-icons toggle-password">visibility</i>
+      </div>
+      <button type="submit">Login</button>
+    </form>
+    <div class="progress-container">
+      <div id="progressBar" class="progress-bar"></div>
+    </div>
+    <p id="result"></p>
+  </div>
+  <script>
+    //Toggle password visibility
+    const passwordInput=document.getElementById('password');
+    const togglePassword=document.getElementById('togglePassword');
+    togglePassword.addEventListener('click',()=>{passwordInput.type=passwordInput.type==='password'?'text':'password';});
+
+    //Handle form submission
+    document.getElementById("loginForm").addEventListener("submit",function(event){
+      event.preventDefault(); //Prevent reload
+      let password=document.getElementById("password").value;
+      bruteForce(password);
+    });
+
+    //Brute-force function
+    function bruteForce(targetPassword){
+      const chars="abcdefghijklmnopqrstuvwxyz0123456789"; //Allowed chars, can be altered to check for capitalised and special chars
+      let startTime=performance.now(); //Start time
+      let progressBar=document.getElementById("progressBar");
+      let totalAttempts=chars.length**6; //Max attempts
+      let attempts=0;
+
+      //Recursive function to generate/check combinations
+      function generateCombinations(prefix,length){
+        if(prefix.length===length){
+          attempts++;
+          updateProgress();
+          if(prefix===targetPassword){ //If found
+            let endTime=performance.now(); //Stop time
+            document.getElementById("result").innerText=`Password found: ${prefix} in ${(endTime-startTime)/1000} sec`;
+            progressBar.style.width="100%";
+            return true;
+          }
+          return false;
+        }
+        for(let i=0;i<chars.length;i++){
+          if(generateCombinations(prefix+chars[i],length))
+            return true;
+        }
+        return false;
+      }
+
+      //Update progress bar
+      function updateProgress(){
+        let progress=(attempts/totalAttempts)*100;
+        progressBar.style.width=progress+"%";
+      }
+
+      //Try passwords 1-6 chars long, can be altered for longer pass
+      for(let len=1;len<=6;len++){
+        if(generateCombinations("",len))
+          return;
+      }
+      document.getElementById("result").innerText="Password not found within limit";
+    }
+  </script>
+</body>
+</html>
