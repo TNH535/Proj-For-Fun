@@ -24,7 +24,7 @@ This project is a **Brute Force Login Simulation** designed to demonstrate the s
 ## Installation & Setup
 1. Clone the repository:
    ```sh
-   git clone https://github.com/TNH535/BruteForceSim.git
+   git clone https://github.com/TNH535/Proj-For-Fun/main/BruteForceSim.git
    ```
 2. Open the `index.html` file in a browser.
 3. Alternatively, use **Live Server** in VS Code to run the project.
