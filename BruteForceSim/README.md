@@ -22,12 +22,17 @@ This project is a **Brute Force Login Simulation** designed to demonstrate the s
 5. If it exceeds the character limit, it notifies that the password was not found.
 
 ## Installation & Setup
-1. Clone the repository:
+1. Clone only the `BruteForceSim` directory from the repository using Sparse Checkout:
    ```sh
-   git clone https://github.com/TNH535/Proj-For-Fun/main/BruteForceSim.git
+   git clone --no-checkout https://github.com/TNH535/Proj-For-Fun.git
+   cd Proj-For-Fun
+   git sparse-checkout init --cone
+   git sparse-checkout set BruteForceSim
+   git checkout main
    ```
-2. Open the `index.html` file in a browser.
-3. Alternatively, use **Live Server** in VS Code to run the project.
+2. Navigate to the `BruteForceSim` folder.
+3. Open the `index.html` file in a browser.
+4. Alternatively, use **Live Server** in VS Code to run the project.
 
 ## License
 This project is licensed under the **MIT License** – free to use for educational purposes.
